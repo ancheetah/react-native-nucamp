@@ -2,8 +2,52 @@ import React, { Component } from 'react';
 import Directory from './DirectoryComponent';
 import { CAMPSITES } from '../shared/campsites';
 import CampsiteInfo from './CampsiteInfoComponent';
-import { View } from 'react-native';
 
+//Stack Navigation
+// expo install react-navigation@4
+// expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view react-navigation-stack@^1.10.3
+import { View, Platform } from 'react-native';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
+
+const DirectoryNavigator = createStackNavigator(
+    {
+        Directory: { screen: Directory },
+        CampsiteInfo: { screen: CampsiteInfo }
+    }, 
+    {
+        initialRouteName: 'Directory',
+        defaultNavigationOptions: {
+            headerStyle: {
+                backgroundColor: '#5637DD'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff'
+            }
+        }
+    }
+);
+
+const AppNavigator = createAppContainer(DirectoryNavigator);
+
+class Main extends Component {
+    render() {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+            }}>
+                <AppNavigator />
+            </View>
+        );
+    }
+}
+
+export default Main;
+
+/*
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -33,5 +77,4 @@ class Main extends Component {
         );
     }
 }
-
-export default Main;
+*/
