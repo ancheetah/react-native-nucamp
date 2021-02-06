@@ -19,6 +19,7 @@ function RenderCampsite({campsite}) {
     return <View />;
 }
 
+//Display more info when a campsite is selected from the Directory component
 class CampsiteInfo extends Component {
 
     constructor(props) {
