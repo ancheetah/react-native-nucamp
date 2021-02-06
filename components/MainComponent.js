@@ -14,6 +14,18 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';  //expo install react-navigation-drawer
 import { createAppContainer } from 'react-navigation';
 
+//Redux
+import { connect } from 'react-redux';
+import { fetchCampsites, fetchComments, fetchPromotions,
+    fetchPartners } from '../redux/ActionCreators';
+
+const mapDispatchToProps = {
+    fetchCampsites,
+    fetchComments,
+    fetchPromotions,
+    fetchPartners
+};
+
 // Main component holds navigation just like it did for React <Router> navigation
 // https://reactnavigation.org/docs/4.x/stack-navigator/#routeconfigs
 
@@ -133,6 +145,14 @@ const MainNavigator = createDrawerNavigator(
 const AppNavigator = createAppContainer(MainNavigator); // returns a component, adds basic nav functions like a back button
 
 class Main extends Component {
+
+    componentDidMount() {
+        this.props.fetchCampsites();
+        this.props.fetchComments();
+        this.props.fetchPromotions();
+        this.props.fetchPartners();
+    }
+
     render() {
         return (
             <View
@@ -155,7 +175,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Main;
+export default connect(null, mapDispatchToProps)(Main);
 
 /*
 class Main extends Component {

@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 import { FlatList } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { CAMPSITES } from '../shared/campsites';
+import { Tile } from 'react-native-elements';
+
+// Redux
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
+
+//import { CAMPSITES } from '../shared/campsites';
+
+const mapStateToProps = state => {
+    return {
+        campsites: state.campsites
+    };
+};
 
 //Renders a list of campsites (name, description, image)
 class Directory extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            campsites: CAMPSITES
-        };
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         campsites: CAMPSITES
+    //     };
+    // }
 
     static navigationOptions = {
         title: 'Directory'
@@ -24,9 +35,10 @@ class Directory extends Component {
                                                     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#object_destructuring
         const renderDirectoryItem = ({item}) => {
             return (
-                <ListItem
+                <Tile
                     title={item.name}
-                    subtitle={item.description}
+                    caption={item.description}
+                    featured
                     // onPress={() => this.props.onPress(item.id)}  //calls a user-defined event handler
                     // https://reactnavigation.org/docs/4.x/navigation-prop/#navigate---link-to-other-screens
                     onPress={
@@ -35,14 +47,15 @@ class Directory extends Component {
                                 { campsiteId: item.id } // optional params to merge into the destination route
                             )
                         }
-                    leftAvatar={{ source: require('./images/react-lake.jpg')}}
+                    //leftAvatar={{ source: require('./images/react-lake.jpg')}}
+                    imageSrc={{uri: baseUrl + item.image}}
                 />
             );
         };
 
         return (
             <FlatList
-                data={this.state.campsites}
+                data={this.props.campsites.campsites}
                 renderItem={renderDirectoryItem}
                 keyExtractor={item => item.id.toString()}
             />
@@ -51,4 +64,4 @@ class Directory extends Component {
 
 }
 
-export default Directory;
+export default connect(mapStateToProps)(Directory);
