@@ -9,6 +9,7 @@ import { baseUrl } from '../shared/baseUrl';
 // import { CAMPSITES } from '../shared/campsites';
 // import { PROMOTIONS } from '../shared/promotions';
 // import { PARTNERS } from '../shared/partners';
+import Loading from './LoadingComponent';
 
 const mapStateToProps = state => {
     return {
@@ -18,7 +19,20 @@ const mapStateToProps = state => {
     };
 };
 
-function RenderItem({item}) {
+function RenderItem(props) {
+    const {item} = props;
+
+    if (props.isLoading) {
+        return <Loading />;
+    }
+    if (props.errMess) {
+        return (
+            <View>
+                <Text>{props.errMess}</Text>
+            </View>
+        );
+    }
+    
     if (item) {
         return (
             <Card
@@ -29,6 +43,7 @@ function RenderItem({item}) {
                     {item.description}
                 </Text>
             </Card>
+            
         );
     }
     return <View />;
@@ -54,12 +69,18 @@ class Home extends Component {
             <ScrollView>
                 <RenderItem 
                     item={this.props.campsites.campsites.filter(campsite => campsite.featured)[0]}
+                    isLoading={this.props.campsites.isLoading}
+                    errMess={this.props.campsites.errMess}
                 />
                 <RenderItem 
                     item={this.props.promotions.promotions.filter(promotion => promotion.featured)[0]}
+                    isLoading={this.props.campsites.isLoading}
+                    errMess={this.props.campsites.errMess}
                 />
                 <RenderItem 
                     item={this.props.partners.partners.filter(partner => partner.featured)[0]}
+                    isLoading={this.props.campsites.isLoading}
+                    errMess={this.props.campsites.errMess}
                 />
             </ScrollView>
         );
