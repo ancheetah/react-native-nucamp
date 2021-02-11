@@ -1,6 +1,8 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 
+// -------------------------------------------------------------------
+// Fetch comments list for a particular campsite
 export const fetchComments = () => dispatch => {
     return fetch(baseUrl + 'comments')
         .then(response => {
@@ -30,6 +32,8 @@ export const addComments = comments => ({
     type: ActionTypes.ADD_COMMENTS,
     payload: comments
 });
+
+// --------------------------------------------------------------------
 
 export const fetchCampsites = () => dispatch => {
 
@@ -68,6 +72,8 @@ export const addCampsites = campsites => ({
     payload: campsites
 });
 
+// ----------------------------------------------------------------------
+
 export const fetchPromotions = () => dispatch => {
     
     dispatch(promotionsLoading());
@@ -104,6 +110,8 @@ export const addPromotions = promotions => ({
     type: ActionTypes.ADD_PROMOTIONS,
     payload: promotions
 });
+
+// ---------------------------------------------------------------------
 
 export const fetchPartners = () => dispatch => {
     
@@ -142,6 +150,8 @@ export const addPartners = partners => ({
     payload: partners
 });
 
+// -----------------------------------------------------------------
+
 export const postFavorite = campsiteId => dispatch => {
     setTimeout(() => {
         dispatch(addFavorite(campsiteId));
@@ -151,4 +161,27 @@ export const postFavorite = campsiteId => dispatch => {
 export const addFavorite = campsiteId => ({
     type: ActionTypes.ADD_FAVORITE,
     payload: campsiteId
+});
+
+// -----------------------------------------------------------------
+
+export const postComment = ( campsiteId, rating, author, text ) => dispatch => {
+    
+    const newComment = {
+        campsiteId,
+        rating,
+        author,
+        text,
+        date: new Date().toISOString()
+    };
+
+    setTimeout(() => {
+        dispatch(addComment(newComment));
+    }, 2000);
+
+};
+
+export const addComment = comment => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: comment
 });
