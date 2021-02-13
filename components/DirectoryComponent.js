@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FlatList, View, Text } from 'react-native';
 import { Tile } from 'react-native-elements';
+import * as Animatable from 'react-native-animatable';
 
 // Redux
 import { connect } from 'react-redux';
@@ -36,21 +37,23 @@ class Directory extends Component {
                                                     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#object_destructuring
         const renderDirectoryItem = ({item}) => {
             return (
-                <Tile
-                    title={item.name}
-                    caption={item.description}
-                    featured
-                    // onPress={() => this.props.onPress(item.id)}  //calls a user-defined event handler
-                    // https://reactnavigation.org/docs/4.x/navigation-prop/#navigate---link-to-other-screens
-                    onPress={
-                        () => navigate(
-                                'CampsiteInfo', // routeName - a destination that has been registered somewhere in the app's router
-                                { campsiteId: item.id } // optional params to merge into the destination route
-                            )
-                        }
-                    //leftAvatar={{ source: require('./images/react-lake.jpg')}}
-                    imageSrc={{uri: baseUrl + item.image}}
-                />
+                <Animatable.View animation='fadeInRightBig' duration={2000}>
+                    <Tile
+                        title={item.name}
+                        caption={item.description}
+                        featured
+                        // onPress={() => this.props.onPress(item.id)}  //calls a user-defined event handler
+                        // https://reactnavigation.org/docs/4.x/navigation-prop/#navigate---link-to-other-screens
+                        onPress={
+                            () => navigate(
+                                    'CampsiteInfo', // routeName - a destination that has been registered somewhere in the app's router
+                                    { campsiteId: item.id } // optional params to merge into the destination route
+                                )
+                            }
+                        //leftAvatar={{ source: require('./images/react-lake.jpg')}}
+                        imageSrc={{uri: baseUrl + item.image}}
+                    />
+                </Animatable.View>
             );
         };
 
