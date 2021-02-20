@@ -4,10 +4,10 @@ import { Input, CheckBox, Button, Icon } from 'react-native-elements';
 import * as SecureStore from 'expo-secure-store';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import * as MediaLibrary from 'expo-media-library';
 import * as Permissions from 'expo-permissions';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { baseUrl } from '../shared/baseUrl';
-import { SaveFormat } from 'expo-image-manipulator';
 
 class LoginTab extends Component {
 
@@ -163,6 +163,7 @@ class RegisterTab extends Component {
                 console.log("Captured Image: ", capturedImage);
                 // this.setState({imageUrl: capturedImage.uri});
                 this.processImage(capturedImage.uri);
+                MediaLibrary.saveToLibraryAsync(capturedImage.uri);
             }
         }
     }
