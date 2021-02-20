@@ -3,9 +3,11 @@ import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { Input, CheckBox, Button, Icon } from 'react-native-elements';
 import * as SecureStore from 'expo-secure-store';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 import * as Permissions from 'expo-permissions';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { baseUrl } from '../shared/baseUrl';
+import { SaveFormat } from 'expo-image-manipulator';
 
 class LoginTab extends Component {
 
@@ -158,10 +160,22 @@ class RegisterTab extends Component {
                 aspect: [1, 1]
             });
             if (!capturedImage.cancelled) {
-                console.log(capturedImage);
-                this.setState({imageUrl: capturedImage.uri});
+                console.log("Captured Image: ", capturedImage);
+                // this.setState({imageUrl: capturedImage.uri});
+                this.processImage(capturedImage.uri);
             }
         }
+    }
+
+    processImage = async (imgUri) => {
+        const processedImg = await ImageManipulator.manipulateAsync(
+            imgUri,
+            [{crop: {originX: 0, originY: 0, width: 400, height: 400}}],
+            { format: ImageManipulator.SaveFormat.PNG }
+        );
+        
+        console.log("Cropped Image: ", processedImg);
+        this.setState({imageUrl: processedImg.uri});
     }
 
     handleRegister() {
